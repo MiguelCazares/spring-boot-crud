@@ -11,15 +11,14 @@ public class ErrorHandlerController {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleException(Exception e) {
         String type = e.getClass().getSimpleName();
-        switch (type) {
-            case "NoSuchElementException":
-                return new ResponseEntity<>(new CustomException("error", "Product not found"), HttpStatus.NOT_FOUND);
-            case "IllegalArgumentException":
-                return new ResponseEntity<>(new CustomException("error", "Invalid request"), HttpStatus.BAD_REQUEST);
-            default:
-                return new ResponseEntity<>(new CustomException("error", "Something went wrong"), HttpStatus.INTERNAL_SERVER_ERROR);
-
-        }
+        return switch (type) {
+            case "NoSuchElementException" ->
+                    new ResponseEntity<>(new CustomException("error", "Product not found"), HttpStatus.NOT_FOUND);
+            case "IllegalArgumentException" ->
+                    new ResponseEntity<>(new CustomException("error", "Invalid request"), HttpStatus.BAD_REQUEST);
+            default ->
+                    new ResponseEntity<>(new CustomException("error", "Something went wrong"), HttpStatus.INTERNAL_SERVER_ERROR);
+        };
     }
 }
 
