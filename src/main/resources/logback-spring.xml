@@ -1,0 +1,20 @@
+<configuration>
+
+    <!-- Configuración del appender de consola para DEBUG y TRACE -->
+    <appender name="CONSOLE_DEBUG" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Nivel de registro para el paquete raíz y otros paquetes específicos -->
+    <logger name="com.test.demo" level="TRACE">
+        <appender-ref ref="CONSOLE_DEBUG"/>
+    </logger>
+
+    <!-- Nivel de registro predeterminado para el resto de los paquetes -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE_DEBUG"/>
+    </root>
+
+</configuration>

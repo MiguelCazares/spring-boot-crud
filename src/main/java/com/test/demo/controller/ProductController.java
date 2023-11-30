@@ -2,10 +2,14 @@ package com.test.demo.controller;
 
 import com.test.demo.entity.Product;
 import com.test.demo.service.ProductService;
+import org.hibernate.annotations.NotFoundAction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 @RestController
 @RequestMapping("/products")
@@ -24,7 +28,7 @@ public class ProductController {
         try {
             return new ResponseEntity<>(productService.getProducts(), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ErrorHandlerController().handleException(e);
         }
     }
 
@@ -35,7 +39,7 @@ public class ProductController {
         try {
             return new ResponseEntity<>(productService.addProduct(product), HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ErrorHandlerController().handleException(e);
         }
     }
 
@@ -45,7 +49,7 @@ public class ProductController {
         try {
             return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ErrorHandlerController().handleException(e);
         }
     }
 
@@ -55,7 +59,7 @@ public class ProductController {
         try {
             return new ResponseEntity<>(productService.updateProduct(id, product), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ErrorHandlerController().handleException(e);
         }
     }
 
@@ -66,7 +70,7 @@ public class ProductController {
             productService.deleteProduct(id);
             return new ResponseEntity<>("Product deleted successfully", HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ErrorHandlerController().handleException(e);
         }
     }
 }
